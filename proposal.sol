@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.2 <0.9.0;
 
+//제안과 동시에 펀딩시작 함수
+
 contract ProposalAndFundingContract {
     struct Proposal {
         address proposer; // 제안자 주소
