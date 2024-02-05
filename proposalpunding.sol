@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-// ERC1155 토큰을 위한 인터페이스
-import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+// 안건등록과 동시에 펀딩시작, 펀딩 참여,종료 까지 일단
 
 contract ProposalAndFunding {
     // 안건 구조체 정의
