@@ -1,20 +1,31 @@
 // SPDX-License-Identifier: GPL-3.0
-
-
 pragma solidity >=0.8.2 <0.9.0;
 
+interface VotingContract {
+    function getVoteResult(uint256 proposalIndex) external view returns (uint256 yesVotes, uint256 noVotes);
+}
+
 contract SaleContract {
-    struct Sale {
-        bool executed;
+    VotingContract public votingContract;
+
+    constructor(address _votingContractAddress) {
+        votingContract = VotingContract(_votingContractAddress);
     }
 
-    mapping(uint256 => Sale) public sales;
-
+    // 판매를 실행하는 함수입니다.
     function executeSale(uint256 proposalIndex) public {
-        Sale storage sale = sales[proposalIndex];
-        require(!sale.executed, "Sale already executed");
-        // 여기에 매각 로직 구현
-        sale.executed = true;
-        // 자금 분배 또는 NFT 전송 로직 구현
+        // 투표 결과를 가져옵니다.
+        (uint256 yesVotes, uint256 noVotes) = votingContract.getVoteResult(proposalIndex);
+        
+        // 투표 비율을 계산합니다.
+        uint256 totalVotes = yesVotes + noVotes;
+        uint256 yesPercentage = (yesVotes * 100) / totalVotes;
+
+        // yes 비율이 50%를 초과하는지 확인
+        require(yesPercentage > 50, "Not enough 'yes' votes to execute sale");
+
+
+        // 판매 로직 구현
+        // 자금 분배 NFT 전송 구현
     }
 }
