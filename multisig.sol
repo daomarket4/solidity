@@ -8,11 +8,11 @@ contract MultiSig {
     uint public signaturesRequired;
 
     struct Transaction {
-        address destination;
-        uint value;
-        bytes data;
-        bool executed;
-        uint signatureCount;
+     address destination; // 트랜잭션의 목적지 주소
+        uint value; // 전송할 이더의 양
+        bytes data; // 트랜잭션 데이터
+        bool executed; // 트랜잭션이 실행되었는지 여부
+        uint signatureCount; // 서명된 수
     }
 
     mapping(uint => Transaction) public transactions;
@@ -25,8 +25,8 @@ contract MultiSig {
     }
 
     constructor(address[] memory _owners, uint _signaturesRequired) {
-        require(_owners.length <= 5, "Cannot have more than 5 owners");
-        require(_signaturesRequired >= 3 && _signaturesRequired <= _owners.length, "Invalid number of required signatures");
+        require(_owners.length <= 5, "Cannot have more than 5 owners"); //5 명 지정 
+        require(_signaturesRequired >= 3 && _signaturesRequired <= _owners.length, "Invalid number of required signatures"); //3명 이상
 
         for (uint i = 0; i < _owners.length; i++) {
             require(_owners[i] != address(0), "Invalid owner");
