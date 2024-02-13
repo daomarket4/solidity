@@ -83,6 +83,12 @@ contract ProposalAndFunding {
         }
     }
 
+     // 목표 금액 도달 여부를 확인하는 함수
+    function isFundingGoalReached(uint256 _proposalId) public view returns (bool) {
+        Proposal storage proposal = proposals[_proposalId];
+        return proposal.amountRaised >= proposal.fundingGoal;
+    }
+
     // 펀딩 종료 후 환불 처리 함수
     function finalizeAndRefund(uint256 _proposalId) public {
         Proposal storage proposal = proposals[_proposalId];
