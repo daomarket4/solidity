@@ -85,7 +85,7 @@ contract ProposalAndFunding {
     }
 
      // 펀딩 종료 후 환불 처리 함수
-    /* function finalizeAndRefund(uint256 _proposalId) public {
+    function finalizeAndRefund(uint256 _proposalId) public {
         Proposal storage proposal = proposals[_proposalId];
         // 펀딩 기간 종료 및 상태 검증
         require(block.timestamp > proposal.endTime, "Funding period is not over yet");
@@ -96,17 +96,17 @@ contract ProposalAndFunding {
         // 목표 금액에 미달한 경우 환불 처리
         if (proposal.amountRaised < proposal.fundingGoal) {
             for (uint256 i = 0; i < proposals.length; i++) {
-                uint256 contributedAmount = proposal.contributions[proposals[i].proposer];
+                uint256 contributedAmount = contributions[_proposalId][proposals[i].proposer];
                 if (contributedAmount > 0) {
                     address payable contributor = payable(proposals[i].proposer);
-                    proposal.contributions[contributor] = 0;
+                    contributions[_proposalId][contributor] = 0;
                     contributor.transfer(contributedAmount);
                 }
             }
         }
 
         emit FundingClosed(_proposalId, proposal.amountRaised);
-    } */
+    }
 
 
     // 안건 상세 정보를 조회하는 함수
