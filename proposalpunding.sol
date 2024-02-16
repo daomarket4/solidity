@@ -41,14 +41,14 @@ contract ProposalAndFunding {
         
         uint256 startTime = block.timestamp;
         uint256 endTime = startTime + (_durationInDays * 1 days);
-        uint256 fundingGoalWithMargin = _fundingGoal + (_fundingGoal * 10 / 100);
+        // uint256 fundingGoalWithMargin = _fundingGoal + (_fundingGoal * 10 / 100); 아마삭제할듯? 프론트에서도 구현가능
         
         proposals.push(Proposal({
             proposer: msg.sender,
             title: _title,
             nftLink: _nftLink,
             imageLink: _imageLink,
-            fundingGoal: fundingGoalWithMargin,
+            fundingGoal: _fundingGoal, //이렇게수정
             amountRaised: 0,
             startTime: startTime,
             endTime: endTime,
@@ -57,7 +57,7 @@ contract ProposalAndFunding {
         }));
         uint256 proposalId = proposals.length - 1;
         
-        emit NewProposal(proposalId, msg.sender, fundingGoalWithMargin, startTime, endTime);
+        emit NewProposal(proposalId, msg.sender, _fundingGoal, startTime, endTime);
     }
 
     // 펀딩에 참여하는 함수
