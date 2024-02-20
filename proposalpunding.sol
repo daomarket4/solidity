@@ -152,7 +152,7 @@ contract ProposalAndFunding {
     }
 
     // 제안 상세 정보 조회 함수
-    function getProposalDetails(uint256 _proposalId) public view returns (
+    function getProposal(uint256 _proposalId) public view returns (
         address proposer,
         string memory title,
         string memory nftLink,
@@ -181,6 +181,11 @@ contract ProposalAndFunding {
             proposal.isRefunded,
             address(this) // 현재 컨트랙트의 주소 반환
         );
+    }
+
+    // 제안 수 조회 함수
+    function getProposalsCount() public view returns (uint256) { 
+        return proposals.length; // 제안 배열의 길이 반환
     }
 
     // 기여자 목록 조회 함수
@@ -236,5 +241,12 @@ contract ProposalAndFunding {
         // NFT 구매를 위한 NFT 구매 스마트 계약의 purchaseNFT 함수 호출
         // 예시: NFTPurchaseContract nftContract = NFTPurchaseContract(nftContractAddress);
         // nftContract.purchaseNFT(proposal.proposer, proposal.nftLink, proposal.imageLink); 
+    }
+    
+    // 목표 모금액 달성 여부 확인 함수
+    function isFundingGoalReached(uint256 _proposalId) public view returns (bool) {
+        require(_proposalId < proposals.length, "Proposal does not exist");
+        Proposal storage proposal = proposals[_proposalId];
+        return proposal.amountRaised >= proposal.fundingGoal;
     }
 }
