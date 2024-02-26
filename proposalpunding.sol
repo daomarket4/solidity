@@ -4,6 +4,7 @@ pragma solidity >=0.8.2 <0.9.0;
 contract ProposalAndFunding {
     address public admin; // 초기 관리자 주소
     mapping(address => bool) public admins; // 관리자 목록
+    address[] public adminList; // 관리자 주소 목록
     Proposal[] public proposals; // 모든 제안 리스트
 
     struct Contribution {
@@ -36,24 +37,42 @@ contract ProposalAndFunding {
     event FundingClosed(uint256 indexed proposalId, uint256 amountRaised);
     event FundingCancelled(uint256 indexed proposalId); // 취소 이벤트 추가
 
-    constructor() {
-        admin = msg.sender;
-        admins[msg.sender] = true;
-    }
-
-    modifier onlyAdmin() {
-        require(admins[msg.sender], "Not an admin");
-        _;
+   constructor() {
+        admin = msg.sender; // 배포자를 초기 관리자로 설정
+        admins[msg.sender] = true; // 배포자의 관리자 여부를 참으로 설정
+        adminList.push(msg.sender); // 관리자 목록에 배포자 추가
     }
 
     function addAdmin(address _newAdmin) public onlyAdmin {
         require(_newAdmin != address(0), "Invalid address");
+        require(!admins[_newAdmin], "Already an admin");
         admins[_newAdmin] = true;
+        adminList.push(_newAdmin); // 관리자 목록에 새 관리자 추가
     }
 
     function removeAdmin(address _admin) public onlyAdmin {
         require(_admin != msg.sender, "Cannot remove self");
+        require(admins[_admin], "Not an admin");
         admins[_admin] = false;
+
+        // 관리자 목록에서 제거하는 로직 구현
+        for (uint i = 0; i < adminList.length; i++) {
+            if (adminList[i] == _admin) {
+                adminList[i] = adminList[adminList.length - 1];
+                adminList.pop();
+                break;
+            }
+        }
+    }
+
+    function getAdmins() public view returns (address[] memory) {
+        return adminList; // 현재 등록된 모든 관리자 주소 목록 반환
+    }
+
+    // onlyAdmin modifier 구현
+    modifier onlyAdmin() {
+        require(admins[msg.sender], "Not an admin");
+        _;
     }
 
 // 새로운 제안 객체 생성
