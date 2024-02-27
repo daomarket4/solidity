@@ -88,13 +88,13 @@ contract MintNFT is ERC1155, Ownable {
         ProposalAndFunding proposalAndFunding = ProposalAndFunding(address(0x915bE544824b5F4786809358ccf63439A81a599b));
         return proposalAndFunding.getSuccessfulFundingDetails();
     }
-    //튜표파워 반환
-     function getVotingPower(address account) public view returns (uint256) {
-        uint256 totalPower = 0;
-        for (uint256 i = 0; i < balanceOf(account); i++) {
-            totalPower = totalPower.add(VOTING_POWER_PER_NFT);
-        }
-        return totalPower;
+    // 튜표파워 반환
+    // 튜표파워 반환
+function getVotingPower(address account) public view returns (uint256) {
+    uint256 totalPower = 0;
+    for (uint256 i = 0; i < balanceOf(account, 0); i++) {
+        totalPower = totalPower.add(VOTING_POWER_PER_NFT);
     }
-    
+    return totalPower;
+}
 }
