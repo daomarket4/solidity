@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.2 <0.9.0;
 
-import "daomarket/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "daomarket/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 
 interface VotingContract {
     function getVoteResult(uint256 proposalIndex) external view returns (uint256 yesVotes, uint256 noVotes);
+    function getVotingPower(address voter) external view returns (uint256);
 }
 
 contract SaleContract {
@@ -27,6 +28,9 @@ contract SaleContract {
 
         // yes 비율이 50%를 초과하는지 확인
         require(yesPercentage > 50, "Not enough 'yes' votes to execute sale");
+
+        // 보팅 파워 가져오기
+        uint256 voterPower = votingContract.getVotingPower(msg.sender);
 
         //nft 판매
         IERC721 nftContract = IERC721(_nftContractAddress);

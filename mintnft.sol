@@ -25,6 +25,7 @@ contract MintNFT is ERC1155, Ownable {
     string public name; // 토큰 이름
     string public symbol; // 토큰 심볼
     uint256 constant TOTAL_NFT_SUPPLY = 1000; // NFT 총 공급량
+    uint256 constant VOTING_POWER_PER_NFT = 1; // 각 NFT당 보팅파워 (0.1% 씩)
 
     // proposalID별로 기여한 금액을 저장하는 매핑
     mapping(uint256 => mapping(address => uint256)) public proposalFundingAmounts;
@@ -87,4 +88,13 @@ contract MintNFT is ERC1155, Ownable {
         ProposalAndFunding proposalAndFunding = ProposalAndFunding(address(0x915bE544824b5F4786809358ccf63439A81a599b));
         return proposalAndFunding.getSuccessfulFundingDetails();
     }
+    //튜표파워 반환
+     function getVotingPower(address account) public view returns (uint256) {
+        uint256 totalPower = 0;
+        for (uint256 i = 0; i < balanceOf(account); i++) {
+            totalPower = totalPower.add(VOTING_POWER_PER_NFT);
+        }
+        return totalPower;
+    }
+    
 }
